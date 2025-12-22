@@ -6,7 +6,7 @@ const updateProfile = async (userModel, req, res) => {
   const reqUserName = userModel.toLowerCase();
   const userProfile = req[reqUserName];
 
-  if (userProfile.email === 'admin@admin.com') {
+  if (userProfile.email === 'Rahul@admin.com') {
     return res.status(403).json({
       success: false,
       result: null,

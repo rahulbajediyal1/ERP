@@ -22,7 +22,7 @@ export default function LoginForm() {
       >
         <Input
           prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder={'admin@admin.com'}
+          placeholder={'Rahul@admin.com'}
           type="email"
           size="large"
         />

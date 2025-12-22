@@ -32,7 +32,7 @@ const updateProfilePassword = async (userModel, req, res) => {
     salt: salt,
   };
 
-  if (userProfile.email === 'admin@admin.com') {
+  if (userProfile.email === 'Rahul@admin.com') {
     return res.status(403).json({
       success: false,
       result: null,
