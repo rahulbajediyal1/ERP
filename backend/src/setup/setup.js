@@ -18,7 +18,7 @@ async function setupApp() {
     const passwordHash = newAdminPassword.generateHash(salt, 'admin123');
 
     const demoAdmin = {
-      email: 'Rahul@admin.com',
+      email: 'admin@admin.com',
       name: 'IDURAR',
       surname: 'Admin',
       enabled: true,
