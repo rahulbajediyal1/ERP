@@ -3,37 +3,50 @@ const mongoose = require('mongoose');
 const { globSync } = require('glob');
 const path = require('path');
 
-// Make sure we are running node 7.6+
-const [major, minor] = process.versions.node.split('.').map(parseFloat);
+// Node version check
+const [major] = process.versions.node.split('.').map(parseFloat);
 if (major < 20) {
-  console.log('Please upgrade your node.js version at least 20 or greater. 👌\n ');
+  console.log('Please upgrade your node.js version to 20 or greater. 👌\n ');
   process.exit();
 }
 
-// import environmental variables from our variables.env file
+// Env variables load karna (Local testing ke liye)
 require('dotenv').config({ path: '.env' });
 require('dotenv').config({ path: '.env.local' });
 
-mongoose.connect(process.env.DATABASE);
+// DATABASE Connection String check
+// Agar process.env.DATABASE nahi mil raha, toh error dikhaye
+if (!process.env.DATABASE) {
+  console.error('❌ ERROR: DATABASE connection string is missing in Environment Variables!');
+  process.exit(1);
+}
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// Mongoose connection logic
+mongoose.connect(process.env.DATABASE)
+  .then(() => console.log('✅ MongoDB connected successfully!'))
+  .catch((err) => {
+    console.log('❌ MongoDB connection error:');
+    console.error(err.message);
+  });
 
 mongoose.connection.on('error', (error) => {
-  console.log(
-    `1. 🔥 Common Error caused issue → : check your .env file first and add your mongodb url`
-  );
-  console.error(`2. 🚫 Error → : ${error.message}`);
+  console.log(`🔥 Database connection lost: ${error.message}`);
 });
 
+// Models load karna
 const modelsFiles = globSync('./src/models/**/*.js');
-
 for (const filePath of modelsFiles) {
   require(path.resolve(filePath));
 }
 
 // Start our app!
 const app = require('./app');
-app.set('port', process.env.PORT || 8888);
+
+// RENDER FIX: Render automatically PORT environment variable deta hai
+// Ise hamesha process.env.PORT par hi rakhein
+const PORT = process.env.PORT || 8888;
+
+app.set('port', PORT);
 const server = app.listen(app.get('port'), () => {
-  console.log(`Express running → On PORT : ${server.address().port}`);
+  console.log(`🚀 Express running → On PORT : ${server.address().port}`);
 });
