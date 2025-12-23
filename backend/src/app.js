@@ -19,7 +19,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 app.use(cors({
-  origin: ["https://aapka-netlify-site-name.netlify.app", "http://localhost:3000"],
+  origin: ["https://spontaneous-kringle-d2987d.netlify.app/"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
 }));
